@@ -2,7 +2,7 @@ FROM python:3.6-slim
 MAINTAINER Tyler Fowler <tylerfowler.1337@gmail.com>
 
 # Superset setup options
-ENV SUPERSET_VERSION 0.18.5
+ENV SUPERSET_VERSION 0.19.1
 ENV SUPERSET_HOME /superset
 ENV SUP_ROW_LIMIT 5000
 ENV SUP_WEBSERVER_THREADS 8
@@ -45,9 +45,10 @@ RUN mkdir $SUPERSET_HOME
 COPY superset-init.sh /superset-init.sh
 RUN chmod +x /superset-init.sh
 
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 VOLUME $SUPERSET_HOME
 EXPOSE 8088
 
-# since this can be used as a base image adding the file /docker-entrypoint.sh
-# is all you need to do and it will be run *before* Superset is set up
-ENTRYPOINT [ "/superset-init.sh" ]
+CMD "/superset-init.sh"
